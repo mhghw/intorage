@@ -42,15 +42,14 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 
 	defer file.Close()
 
-	// Create the uploads folder if it doesn't
-	// already exist
+	
 	err = os.MkdirAll("./tmp", os.ModePerm)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Create a new file in the uploads directory
+	
 	dst, err := os.Create(fmt.Sprintf("./tmp/%v%d%s", shortid.MustGenerate(), time.Now().UnixNano(), filepath.Ext(fileHeader.Filename)))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -59,8 +58,7 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 
 	defer dst.Close()
 
-	// Copy the uploaded file to the filesystem
-	// at the specified destination
+	
 	_, err = io.Copy(dst, file)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
